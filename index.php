@@ -56,7 +56,7 @@ $app->post(
         try {
             $request = $app->request;
             $xml_data = $request->getPost();
-            $logger->info($xml_data);
+            print_r($xml_data);
             $recMsg = Receive\Parse::parse_xml($xml_data);
             if ($recMsg instanceof Receive\TextMsg) {
                 $toUser = $recMsg->FromUserName;
