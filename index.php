@@ -10,7 +10,10 @@
 use Phalcon\Mvc\Micro;
 use Phalcon\Logger;
 use Phalcon\Logger\Adapter\File as FileAdapter;
-use Receive\{ Msg, TextMsg,  ImageMsg, Parse};
+use Receive\Msg;
+use Receive\TextMsg;
+use Receive\ImageMsg;
+use Receive\Parse;
 use Reply\TextMsg as ReplyMsg;
 
 $logger = new FileAdapter('./logs/test.log');
@@ -56,8 +59,8 @@ $app->post(
         try {
             $xml_data = file_get_contents("php://input");
             $logger->info(print_r($xml_data,true));
-            $recMsg = Receive\Parse::parse_xml($xml_data);
-            if ($recMsg instanceof Receive\TextMsg) {
+            $recMsg = Parse::parse_xml($xml_data);
+            if ($recMsg instanceof TextMsg) {
                 $toUser = $recMsg->FromUserName;
                 $fromUser = $recMsg->ToUserName;
                 $content = $recMsg->Content;
