@@ -51,7 +51,7 @@ $app->get(
 );
 
 $app->post(
-    "wx",
+    "/wx",
     function() use ($app, $logger) {
         try {
             $request = $app->request;
