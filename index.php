@@ -54,9 +54,8 @@ $app->post(
     "/wx",
     function() use ($app, $logger) {
         try {
-            $request = $app->request;
-            $xml_data = $request->getPost();
-            print_r($xml_data);
+            $xml_data = file_get_contents("php://input");
+            $logger->info(print_r($xml_data,true));
             $recMsg = Receive\Parse::parse_xml($xml_data);
             if ($recMsg instanceof Receive\TextMsg) {
                 $toUser = $recMsg->FromUserName;
