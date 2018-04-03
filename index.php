@@ -10,6 +10,8 @@
 use Phalcon\Mvc\Micro;
 use Phalcon\Logger;
 use Phalcon\Logger\Adapter\File as FileAdapter;
+use Receive\{ Msg, TextMsg,  ImageMsg};
+use Reply\TextMsg as ReplyMsg;
 
 $logger = new FileAdapter('./logs/test.log');
 
@@ -39,6 +41,34 @@ $app->get(
                 $app->response->send();
             } else {
                 $app->response->setContent('');
+                $app->response->send();
+            }
+        } catch (Exception $e) {
+            $app->response->setContent($e);
+            $app->response->send();
+        }
+    }
+);
+
+$app->post(
+    "wx",
+    function() use ($app, $logger) {
+        try {
+            $request = $app->request;
+            $xml_data = $request->getPost();
+            $logger->info($xml_data);
+            $recMsg = Receive\Parse::parse_xml($xml_data);
+            if ($recMsg instanceof Receive\TextMsg) {
+                $toUser = $recMsg->FromUserName;
+                $fromUser = $recMsg->ToUserName;
+                $content = $recMsg->Content;
+                $replyMsg = new ReplyMsg($toUser, $fromUser, $content);
+                $res = $replyMsg->send();
+                $logger->info("The result:\n" . $res . "\n");
+                $app->response->setContent($res);
+                $app->response->send();
+            } else {
+                $app->response->setContent('success');
                 $app->response->send();
             }
         } catch (Exception $e) {
