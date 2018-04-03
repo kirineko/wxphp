@@ -10,7 +10,7 @@
 use Phalcon\Mvc\Micro;
 use Phalcon\Logger;
 use Phalcon\Logger\Adapter\File as FileAdapter;
-use Receive\{ Msg, TextMsg,  ImageMsg};
+use Receive\{ Msg, TextMsg,  ImageMsg, Parse};
 use Reply\TextMsg as ReplyMsg;
 
 $logger = new FileAdapter('./logs/test.log');
